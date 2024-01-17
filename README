@@ -1,0 +1,20 @@
+@description: A quiz game that pulls questions and answers
+from a pre-defined array and will change the background color
+based on if the selected answer is correct or not. The background of
+each answer button will display if it is correct or wrong. Loops through the 
+questions in a random order. Does not keep score or allow users to change 
+answers. After selecting the next button, a new question will be showed.
+
+@prerequisites: color vision to distinguish the red and green backgrounds
+which indicate correctness
+
+@future updates:
+- score keeping
+- highlight the answer that was chosen
+- fix CSS for answer buttons
+- end game options and restart mid game
+- instructions pop-out
+
+@author: Em Nam
+@first_created: January 16, 2024
+@last_updated: January 17, 2024
