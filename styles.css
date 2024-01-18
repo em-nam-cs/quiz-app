@@ -43,7 +43,7 @@ body.wrong, .btn.wrong{
 
 .btn-grid{
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
     margin: 20px 0;
 }

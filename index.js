@@ -27,6 +27,7 @@ const answerBtns = document.getElementById('answer-btns');
 startBtn.addEventListener('click', startGame);
 nextBtn.addEventListener('click', setNextQuestion);
 
+
 let shuffledQuestions, currQuestionIndex;
 
 /**
@@ -42,6 +43,7 @@ function startGame(){
     shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currQuestionIndex = 0;
     setNextQuestion();
+    document.body.removeEventListener('keydown', checkEnterKeyForStart);
 }
 
 /**
@@ -67,6 +69,7 @@ function resetState(){
         answerBtns.removeChild(answerBtns.firstChild);
     }
     clearStatus(document.body);
+    document.body.removeEventListener('keydown', checkEnterKeyForNext);
 }
 
 /**
@@ -103,22 +106,51 @@ function showQuestion(currQ){
  */
 function selectAnswer(){
     const userCorrect = this.dataset.correct;
+
+
     setStatusClass(document.body, userCorrect);
 
     Array.from(answerBtns.children).forEach((button) => {
         setStatusClass(button, button.dataset.correct);
     });
 
-    console.log(`index: ${currQuestionIndex}`);
+    // console.log(`index : ${currQuestionIndex}`);
 
     if (currQuestionIndex < shuffledQuestions.length){
         nextBtn.classList.remove('hide');
+        document.body.addEventListener('keydown', checkEnterKeyForNext);
     } else {
         startBtn.textContent = 'RESTART';
         startBtn.classList.remove('hide');
+        document.body.addEventListener('keydown', checkEnterKeyForStart);
     }
 
 }
+
+
+/**
+ * @brief function to advance the question if "enter" key was pressed down
+
+ * @param event captures the event that triggered so can check which keydown
+ */
+function checkEnterKeyForNext(event){
+    if (event.key === "Enter") {
+        setNextQuestion();
+    }
+}
+
+/**
+ * @brief function to advance the question if "enter" key was pressed down
+
+ * @param event captures the event that triggered so can check which keydown
+ */
+function checkEnterKeyForStart(event){
+    if (event.key === "Enter") {
+        startGame();
+    }
+}
+
+
 
 /**
 @brief sets the class of an element to either correct or wrong based on
@@ -148,13 +180,13 @@ function clearStatus(element){
 
 /** Array of questions */
 const questions = [
-    {
-        question: 'what is 2 + 2?',
-        answers: [
-            {text: '4', correct: true},
-            {text: '22', correct: false}
-        ]
-    }, 
+    // {
+    //     question: 'what is 2 + 2?',
+    //     answers: [
+    //         {text: '4', correct: true},
+    //         {text: '22', correct: false}
+    //     ]
+    // }, 
     {
         question: 'what is 2 + 10?',
         answers: [
@@ -165,12 +197,83 @@ const questions = [
         ]
     }, 
     {
-        question: 'what is a grown up puppy',
+        question: 'What is a grown up puppy?',
         answers: [
             {text: 'dog', correct: true},
             {text: 'cat', correct: false},
             {text: 'turtle', correct: false},
             {text: 'duck', correct: false}
         ]
+    }, 
+    {
+        question: 'What is a baby dog?',
+        answers: [
+            {text: 'puppy', correct: true},
+            {text: 'guppy', correct: false},
+            {text: 'cat', correct: false},
+            {text: 'kitten', correct: false}
+        ]
+    }, 
+    {
+        question: 'What was the color of the start button?',
+        answers: [
+            {text: 'yellow', correct: false},
+            {text: 'red', correct: false},
+            {text: 'blue', correct: true}
+        ]
+    }, 
+    {
+        question: 'How much wood could a woodchuck chuck?',
+        answers: [
+            {text: 'if a woodchuck could chuck wood', correct: true},
+            {text: 'wrong', correct: false},
+            {text: 'no', correct: false},
+            {text: "don't pick me", correct: false}
+        ]
     }
+    // {
+    //     question: 'what is 2 + 1?',
+    //     answers: [
+    //         {text: '3', correct: true},
+    //         {text: '22', correct: false},
+    //         {text: '0', correct: false},
+    //         {text: '15', correct: false}
+    //     ]
+    // }, 
+    // {
+    //     question: 'what is 22 + 10?',
+    //     answers: [
+    //         {text: '32', correct: true},
+    //         {text: '22', correct: false},
+    //         {text: '0', correct: false},
+    //         {text: '15', correct: false}
+    //     ]
+    // }, 
+    // {
+    //     question: 'what is 2 * 10?',
+    //     answers: [
+    //         {text: '20', correct: true},
+    //         {text: '22', correct: false},
+    //         {text: '0', correct: false},
+    //         {text: '15', correct: false}
+    //     ]
+    // }, 
+    // {
+    //     question: 'what is 2 + 0?',
+    //     answers: [
+    //         {text: '2', correct: true},
+    //         {text: '22', correct: false},
+    //         {text: '0', correct: false},
+    //         {text: '15', correct: false}
+    //     ]
+    // }, 
+    // {
+    //     question: 'What is the longest answer',
+    //     answers: [
+    //         {text: 'this is a super long answer and just to test the wrapping', correct: true},
+    //         {text: '22', correct: false},
+    //         {text: '0', correct: false},
+    //         {text: '15', correct: false}
+    //     ]
+    // }
 ]
