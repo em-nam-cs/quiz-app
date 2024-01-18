@@ -16,6 +16,7 @@ body{
     width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -32,6 +33,13 @@ body.wrong, .btn.wrong{
     --hue: var(--HUE-WRONG);
 }
 
+
+.score-container{
+    color: white;
+    margin: 40px;
+}
+
+
 .container{
     width: 800px;
     max-width: 80%;
@@ -39,6 +47,12 @@ body.wrong, .btn.wrong{
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0px 0px 10px 2px;
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+}
+
+.question-counter-container{
+    justify-self: end;
 }
 
 .btn-grid{
