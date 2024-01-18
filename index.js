@@ -10,7 +10,7 @@
     which indicate correctness
 @author Em Nam
 @first_created January 16, 2024
-@last_updated January 16, 2024
+@last_updated January 18, 2024
  */
 
 /**
@@ -50,11 +50,6 @@ function startGame(){
     document.body.removeEventListener('keydown', checkEnterKeyForStart);
 }
 
-function displayScore(){
-    scoreElement.classList.remove('hide');
-    scoreElement.textContent = `Score: ${score}`;
-}
-
 
 /**
 @brief displays the next question by first reseting the screen, 
@@ -81,6 +76,19 @@ function resetState(){
     clearStatus(document.body);
     document.body.removeEventListener('keydown', checkEnterKeyForNext);
 }
+
+
+/**
+@TODO after last question, display stats
+need to write HTML to hold text - table? just place above where the question 
+container would normally display
+
+option to restart the game, control (start btn should already exist)
+ */
+function endGame(){
+
+}
+
 
 /**
 @brief displays the questions and creates answer buttons for each
@@ -139,14 +147,20 @@ function selectAnswer(){
         document.body.addEventListener('keydown', checkEnterKeyForStart);
     }
 
-    disableAnswerButtons();
-    displayScore();
-}
-
-function disableAnswerButtons(){
+    //disable answer buttons after one is selected
     for (let i = 0; i < answerBtns.children.length; i++){
         answerBtns.children[i].disabled = true;
     }
+
+    displayScore();
+}
+
+/**
+ * @brief shows the current score
+ */
+function displayScore(){
+    scoreElement.classList.remove('hide');
+    scoreElement.textContent = `Score: ${score}`;
 }
 
 
