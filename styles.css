@@ -29,6 +29,10 @@ body.correct, .btn.correct{
     color: black;
 }
 
+.btn.correct.selected{
+    color: white;
+}
+
 body.wrong, .btn.wrong{
     --hue: var(--HUE-WRONG);
 }
@@ -65,17 +69,18 @@ body.wrong, .btn.wrong{
 .btn{
     --hue: var(--HUE_NEUTRAL);
     background-color: hsl(var(--hue), 100%, 40%);
-    border: 1px solid;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 5px;
     color: white;
     padding: 25px 10px;
     outline: none;
 }
 
-.btn:hover{
-    border-color: black;
+.btn:hover:enabled{
     --hue: var(--HUE_NEUTRAL);
     background-color: hsl(var(--hue), 100%, 35%);
+    border-color: black;
 }
 
 .start-btn, .next-btn{
@@ -92,4 +97,10 @@ body.wrong, .btn.wrong{
 
 .hide{
     display: none;
+}
+
+.selected{
+    border-width: 3px;
+    border-color: black;
+    background-color: hsl(var(--hue), 100%, 20%);
 }

@@ -23,12 +23,14 @@ const nextBtn = document.getElementById('next-btn');
 const questionContainer = document.getElementById('question-container');
 const questionElement = document.getElementById('question');
 const answerBtns = document.getElementById('answer-btns');
+const questionCounterElement = document.getElementById('question-counter');
+const scoreElement = document.getElementById('score');
 
 startBtn.addEventListener('click', startGame);
 nextBtn.addEventListener('click', setNextQuestion);
 
 
-let shuffledQuestions, currQuestionIndex;
+let shuffledQuestions, currQuestionIndex, score;
 
 /**
 @brief function to start the game called when start button clicked
@@ -42,9 +44,17 @@ function startGame(){
     nextBtn.classList.remove('hide');
     shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currQuestionIndex = 0;
+    score = 0;
+    displayScore();
     setNextQuestion();
     document.body.removeEventListener('keydown', checkEnterKeyForStart);
 }
+
+function displayScore(){
+    scoreElement.classList.remove('hide');
+    scoreElement.textContent = `Score: ${score}`;
+}
+
 
 /**
 @brief displays the next question by first reseting the screen, 
@@ -82,6 +92,9 @@ function resetState(){
 function showQuestion(currQ){
     questionElement.textContent = currQ.question;
 
+    questionCounterElement.classList.remove('hide');
+    questionCounterElement.textContent = `Q #${currQuestionIndex + 1}`;
+
     for (let i = 0; i < currQ.answers.length; i++){
         const answer = currQ.answers[i]
         const button = document.createElement('button');
@@ -106,15 +119,16 @@ function showQuestion(currQ){
  */
 function selectAnswer(){
     const userCorrect = this.dataset.correct;
+    this.classList.add('selected');
 
+    if (userCorrect){
+        score++;
+    }
 
     setStatusClass(document.body, userCorrect);
-
     Array.from(answerBtns.children).forEach((button) => {
         setStatusClass(button, button.dataset.correct);
     });
-
-    // console.log(`index : ${currQuestionIndex}`);
 
     if (currQuestionIndex < shuffledQuestions.length){
         nextBtn.classList.remove('hide');
@@ -125,6 +139,14 @@ function selectAnswer(){
         document.body.addEventListener('keydown', checkEnterKeyForStart);
     }
 
+    disableAnswerButtons();
+    displayScore();
+}
+
+function disableAnswerButtons(){
+    for (let i = 0; i < answerBtns.children.length; i++){
+        answerBtns.children[i].disabled = true;
+    }
 }
 
 
