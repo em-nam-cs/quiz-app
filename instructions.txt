@@ -1,0 +1,11 @@
+Welcome to the quiz flashcard game. 
+
+Press START to start the game. 
+
+A question will be written at the top of the card and each possible answer
+will be written in a blue answer button. Click on the correct answer and get a 
+point! After you choose, the correct answer(s) will be shown as green and the 
+wrong answers will be shown as red. Press NEXT or the Enter Key to advance 
+to the next question.
+
+After all the questions are answered, you can click RESTART to play again!
