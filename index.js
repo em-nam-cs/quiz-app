@@ -25,12 +25,18 @@ const questionElement = document.getElementById('question');
 const answerBtns = document.getElementById('answer-btns');
 const questionCounterElement = document.getElementById('question-counter');
 const scoreElement = document.getElementById('score');
+const percentageBarContainer = document.getElementById('percentage-bar-container');
+const statsContainer = document.getElementById('stats-container');
+const scoreStatElement = document.getElementById('score-stat');
+const percentStatElement = document.getElementById('percentage-stat');
 
 startBtn.addEventListener('click', startGame);
 nextBtn.addEventListener('click', setNextQuestion);
 
 
 let shuffledQuestions, currQuestionIndex, score;
+
+
 
 /**
 @brief function to start the game called when start button clicked
@@ -70,8 +76,13 @@ function setNextQuestion(){
  */
 function resetState(){
     nextBtn.classList.add('hide');
+    statsContainer.classList.add('hide');
+    
     while(answerBtns.firstChild){
         answerBtns.removeChild(answerBtns.firstChild);
+    }
+    while(percentageBarContainer.firstChild){
+        percentageBarContainer.removeChild(percentageBarContainer.firstChild);
     }
     clearStatus(document.body);
     document.body.removeEventListener('keydown', checkEnterKeyForNext);
@@ -87,7 +98,42 @@ option to restart the game, control (start btn should already exist)
  */
 function endGame(){
 
+    questionContainer.classList.add('hide');
+    questionCounterElement.classList.add('hide');
+
+    startBtn.textContent = 'RESTART';
+    startBtn.classList.remove('hide');
+    document.body.addEventListener('keydown', checkEnterKeyForStart);
+
+    displayStats();
 }
+
+function displayStats(){
+    statsContainer.classList.remove('hide');
+    scoreStatElement.textContent = `Overall Score: ${score}`;
+    percentStatElement.textContent = `Percentage Correct: ${score/currQuestionIndex}%`;
+    createPercentageBar();
+}
+
+
+function createPercentageBar(){
+    console.log(`per bar ${currQuestionIndex}`);
+    for (let i = 0; i < currQuestionIndex; i++){
+        const block = document.createElement('div');
+        block.classList.add('block');
+        if (score > i){
+            block.classList.add('correct');
+        } else {
+            block.classList.add('wrong');
+        }
+
+        percentageBarContainer.appendChild(block);
+    }
+}
+
+
+
+
 
 
 /**
@@ -142,9 +188,7 @@ function selectAnswer(){
         nextBtn.classList.remove('hide');
         document.body.addEventListener('keydown', checkEnterKeyForNext);
     } else {
-        startBtn.textContent = 'RESTART';
-        startBtn.classList.remove('hide');
-        document.body.addEventListener('keydown', checkEnterKeyForStart);
+        endGame();
     }
 
     //disable answer buttons after one is selected
@@ -223,24 +267,24 @@ const questions = [
     //         {text: '22', correct: false}
     //     ]
     // }, 
-    {
-        question: 'what is 2 + 10?',
-        answers: [
-            {text: '12', correct: true},
-            {text: '22', correct: false},
-            {text: '0', correct: false},
-            {text: '15', correct: false}
-        ]
-    }, 
-    {
-        question: 'What is a grown up puppy?',
-        answers: [
-            {text: 'dog', correct: true},
-            {text: 'cat', correct: false},
-            {text: 'turtle', correct: false},
-            {text: 'duck', correct: false}
-        ]
-    }, 
+    // {
+    //     question: 'what is 2 + 10?',
+    //     answers: [
+    //         {text: '12', correct: true},
+    //         {text: '22', correct: false},
+    //         {text: '0', correct: false},
+    //         {text: '15', correct: false}
+    //     ]
+    // }, 
+    // {
+    //     question: 'What is a grown up puppy?',
+    //     answers: [
+    //         {text: 'dog', correct: true},
+    //         {text: 'cat', correct: false},
+    //         {text: 'turtle', correct: false},
+    //         {text: 'duck', correct: false}
+    //     ]
+    // }, 
     {
         question: 'What is a baby dog?',
         answers: [
@@ -313,3 +357,4 @@ const questions = [
     //     ]
     // }
 ]
+

@@ -21,7 +21,7 @@ body{
     align-items: center;
 
     --hue: var(--HUE_NEUTRAL);
-    background-color: hsl(var(--hue), 100%, 30%)
+    background-color: hsl(var(--hue), 100%, 40%)
 }
 
 body.correct, .btn.correct{
@@ -35,6 +35,18 @@ body.correct, .btn.correct{
 
 body.wrong, .btn.wrong{
     --hue: var(--HUE-WRONG);
+}
+
+.block.correct{
+    --hue: var(--HUE-CORRECT);
+    background-color: hsl(var(--hue), 100%, 40%);
+    color: black;
+}
+
+.block.wrong{
+    --hue: var(--HUE-WRONG);
+    background-color: hsl(var(--hue), 100%, 40%);
+    color: black;
 }
 
 
@@ -103,4 +115,21 @@ body.wrong, .btn.wrong{
     border-width: 3px;
     border-color: black;
     background-color: hsl(var(--hue), 100%, 20%);
+}
+
+#score-stat, #percentage-stat {
+    margin: 10px;
+}
+
+#percentage-bar-container {
+    display: flex;
+    width: 100%;
+    flex-basis: content;
+}
+
+.block {
+    border: 2px solid lightslategrey;
+    margin: 0 0 10px 0;
+    flex-grow: 1;
+    height: 20px;
 }
