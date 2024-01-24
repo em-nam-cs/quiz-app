@@ -98,18 +98,19 @@ body.wrong, .btn.wrong{
 .start-btn, .end-btn, .next-btn{
     font-size: 1.5rem;
     font-weight: bold;
-    padding: 10px 20px;
-    flex: 1 1 0px;  /*allows btns to grow and auto be same size*/
+    padding: 10px 30px;
+    min-width: 50%;
 }
 
 .start-btn{
     max-width: 50%;
+    grid-column: 1/-1;
 }
 
 .controls{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
 }
 
 .hide{
