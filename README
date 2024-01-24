@@ -9,16 +9,10 @@ answers. After selecting the next button, a new question will be showed.
 which indicate correctness
 
 @future updates:
-- score keeping
-- keeps track of which number question is being asked
 - does not move grid when next btn appears
-- remove the hover effect after the answer selected, only allow hover on next btn
-- highlight the answer that was chosen
-- fix CSS for answer buttons
-- end game options and restart mid game
 - instructions pop-out
 - randomize order of answer options
 
 @author: Em Nam
 @first_created: January 16, 2024
-@last_updated: January 17, 2024
+@last_updated: January 24, 2024

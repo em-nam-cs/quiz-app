@@ -2,23 +2,31 @@
 @brief a locally hosted quiz game that pulls questions and answers
     from a pre-defined array and will change the background color
     based on if the selected answer is correct or not. The background of
-    each answer button will display if it is correct or wrong. Loops through the 
-    questions in a random order. Does not keep score or allow users to change 
+    each answer button will display if it is correct or wrong and the score will
+    increment if user was correct. Loops through the 
+    questions in a random order. Does not allow users to change 
     answers. After selecting the next button, a new question will be showed.
+    After answering all of the questions or ending the game, the stats 
+    for the attempt are displayed and the user is given the option to 
+    restart the cards. 
 
 @preconditions color vision to distinguish the red and green backgrounds
     which indicate correctness
+
 @author Em Nam
 @first_created January 16, 2024
-@last_updated January 18, 2024
+@last_updated January 24, 2024
  */
 
 /**
  * @TODO figure out shuffled questions without needing global
+ @TODO figure out how to shuffle order of the answer btns
  */
 
+const NUM_DECIMALS_DISP = 2;
 
 const startBtn = document.getElementById('start-btn');
+const endBtn = document.getElementById('end-btn');
 const nextBtn = document.getElementById('next-btn');
 const questionContainer = document.getElementById('question-container');
 const questionElement = document.getElementById('question');
@@ -29,8 +37,11 @@ const percentageBarContainer = document.getElementById('percentage-bar-container
 const statsContainer = document.getElementById('stats-container');
 const scoreStatElement = document.getElementById('score-stat');
 const percentStatElement = document.getElementById('percentage-stat');
+const quesetionCounterStatElement = document.getElementById('question-counter-stat');
+
 
 startBtn.addEventListener('click', startGame);
+endBtn.addEventListener('click', endGame);
 nextBtn.addEventListener('click', setNextQuestion);
 
 
@@ -48,6 +59,7 @@ function startGame(){
     startBtn.classList.add('hide');
     questionContainer.classList.remove('hide');
     nextBtn.classList.remove('hide');
+    endBtn.classList.remove('hide');
     shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currQuestionIndex = 0;
     score = 0;
@@ -77,7 +89,7 @@ function setNextQuestion(){
 function resetState(){
     nextBtn.classList.add('hide');
     statsContainer.classList.add('hide');
-    
+
     while(answerBtns.firstChild){
         answerBtns.removeChild(answerBtns.firstChild);
     }
@@ -90,32 +102,44 @@ function resetState(){
 
 
 /**
-@TODO after last question, display stats
-need to write HTML to hold text - table? just place above where the question 
-container would normally display
-
-option to restart the game, control (start btn should already exist)
+@brief after last question, hide the questions and controls, set background
+    to neutral, display stats, and offer the user the option to restart the deck
  */
 function endGame(){
 
     questionContainer.classList.add('hide');
     questionCounterElement.classList.add('hide');
+    scoreElement.classList.add('hide');
+    endBtn.classList.add('hide');
+    nextBtn.classList.add('hide');
+
+    clearStatus(document.body);
+
+    displayStats();
 
     startBtn.textContent = 'RESTART';
     startBtn.classList.remove('hide');
     document.body.addEventListener('keydown', checkEnterKeyForStart);
-
-    displayStats();
 }
 
+/**
+ * @brief displays each stat based on the user's score and how many questions
+        were answered
+ */
 function displayStats(){
     statsContainer.classList.remove('hide');
     scoreStatElement.textContent = `Overall Score: ${score}`;
-    percentStatElement.textContent = `Percentage Correct: ${score/currQuestionIndex}%`;
+    quesetionCounterStatElement.textContent = `Total Questions Answered: ${currQuestionIndex}`;
+    percentStatElement.textContent = `Percentage Correct: ${(score/currQuestionIndex).toFixed(NUM_DECIMALS_DISP)}%`;
     createPercentageBar();
 }
 
 
+/**
+ * @brief creates a block for each question that was answered and shades
+        in a block green for each correct answer and a block red for each
+        wrong answer
+ */
 function createPercentageBar(){
     console.log(`per bar ${currQuestionIndex}`);
     for (let i = 0; i < currQuestionIndex; i++){
@@ -130,9 +154,6 @@ function createPercentageBar(){
         percentageBarContainer.appendChild(block);
     }
 }
-
-
-
 
 
 
@@ -267,24 +288,24 @@ const questions = [
     //         {text: '22', correct: false}
     //     ]
     // }, 
-    // {
-    //     question: 'what is 2 + 10?',
-    //     answers: [
-    //         {text: '12', correct: true},
-    //         {text: '22', correct: false},
-    //         {text: '0', correct: false},
-    //         {text: '15', correct: false}
-    //     ]
-    // }, 
-    // {
-    //     question: 'What is a grown up puppy?',
-    //     answers: [
-    //         {text: 'dog', correct: true},
-    //         {text: 'cat', correct: false},
-    //         {text: 'turtle', correct: false},
-    //         {text: 'duck', correct: false}
-    //     ]
-    // }, 
+    {
+        question: 'what is 2 + 10?',
+        answers: [
+            {text: '12', correct: true},
+            {text: '22', correct: false},
+            {text: '0', correct: false},
+            {text: '15', correct: false}
+        ]
+    }, 
+    {
+        question: 'What is a grown up puppy?',
+        answers: [
+            {text: 'dog', correct: true},
+            {text: 'cat', correct: false},
+            {text: 'turtle', correct: false},
+            {text: 'duck', correct: false}
+        ]
+    }, 
     {
         question: 'What is a baby dog?',
         answers: [
