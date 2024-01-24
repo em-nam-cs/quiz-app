@@ -77,7 +77,6 @@ function startGame(){
 function setNextQuestion(){
     resetState();
     showQuestion(shuffledQuestions[currQuestionIndex]);
-    currQuestionIndex++;
 }
 
 
@@ -137,6 +136,9 @@ function showQuestion(currQ){
     Displays the next or restart button 
  */
 function selectAnswer(){
+
+    currQuestionIndex++;
+
     const userCorrect = this.dataset.correct;
     this.classList.add('selected');
 
@@ -162,6 +164,8 @@ function selectAnswer(){
     }
 
     displayScore();
+
+    
 }
 
 
@@ -196,7 +200,7 @@ function displayStats(){
     statsContainer.classList.remove('hide');
     scoreStatElement.textContent = `Overall Score: ${score}`;
     quesetionCounterStatElement.textContent = `Total Questions Answered: ${currQuestionIndex}`;
-    percentStatElement.textContent = `Percentage Correct: ${(score/currQuestionIndex).toFixed(NUM_DECIMALS_DISP)}%`;
+    percentStatElement.textContent = `Percentage Correct: ${((score/(currQuestionIndex)).toFixed(NUM_DECIMALS_DISP))*100}%`;
     createPercentageBar();
 }
 
