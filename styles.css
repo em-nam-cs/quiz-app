@@ -140,10 +140,9 @@ body.wrong, .btn.wrong{
 }
 
 #instructions-btn{
-    height: 50px;
+    height: 40px;
     position: fixed;
     top: 0;
     right: 0;
-
-    margin: 30px 10px;
+    margin: 20px 10px;
 }
