@@ -102,62 +102,6 @@ function resetState(){
 
 
 /**
-@brief after last question, hide the questions and controls, set background
-    to neutral, display stats, and offer the user the option to restart the deck
- */
-function endGame(){
-
-    questionContainer.classList.add('hide');
-    questionCounterElement.classList.add('hide');
-    scoreElement.classList.add('hide');
-    endBtn.classList.add('hide');
-    nextBtn.classList.add('hide');
-
-    clearStatus(document.body);
-
-    displayStats();
-
-    startBtn.textContent = 'RESTART';
-    startBtn.classList.remove('hide');
-    document.body.addEventListener('keydown', checkEnterKeyForStart);
-}
-
-/**
- * @brief displays each stat based on the user's score and how many questions
-        were answered
- */
-function displayStats(){
-    statsContainer.classList.remove('hide');
-    scoreStatElement.textContent = `Overall Score: ${score}`;
-    quesetionCounterStatElement.textContent = `Total Questions Answered: ${currQuestionIndex}`;
-    percentStatElement.textContent = `Percentage Correct: ${(score/currQuestionIndex).toFixed(NUM_DECIMALS_DISP)}%`;
-    createPercentageBar();
-}
-
-
-/**
- * @brief creates a block for each question that was answered and shades
-        in a block green for each correct answer and a block red for each
-        wrong answer
- */
-function createPercentageBar(){
-    console.log(`per bar ${currQuestionIndex}`);
-    for (let i = 0; i < currQuestionIndex; i++){
-        const block = document.createElement('div');
-        block.classList.add('block');
-        if (score > i){
-            block.classList.add('correct');
-        } else {
-            block.classList.add('wrong');
-        }
-
-        percentageBarContainer.appendChild(block);
-    }
-}
-
-
-
-/**
 @brief displays the questions and creates answer buttons for each
     answer available for the given question, 
 
@@ -220,6 +164,66 @@ function selectAnswer(){
     displayScore();
 }
 
+
+
+/**
+@brief after last question, hide the questions and controls, set background
+    to neutral, display stats, and offer the user the option to restart the deck
+ */
+function endGame(){
+
+    questionContainer.classList.add('hide');
+    questionCounterElement.classList.add('hide');
+    scoreElement.classList.add('hide');
+    endBtn.classList.add('hide');
+    nextBtn.classList.add('hide');
+
+    clearStatus(document.body);
+
+    displayStats();
+
+    startBtn.textContent = 'RESTART';
+    startBtn.classList.remove('hide');
+    document.body.addEventListener('keydown', checkEnterKeyForStart);
+}
+
+
+/**
+ * @brief displays each stat based on the user's score and how many questions
+        were answered
+ */
+function displayStats(){
+    statsContainer.classList.remove('hide');
+    scoreStatElement.textContent = `Overall Score: ${score}`;
+    quesetionCounterStatElement.textContent = `Total Questions Answered: ${currQuestionIndex}`;
+    percentStatElement.textContent = `Percentage Correct: ${(score/currQuestionIndex).toFixed(NUM_DECIMALS_DISP)}%`;
+    createPercentageBar();
+}
+
+
+
+/**
+ * @brief creates a block for each question that was answered and shades
+        in a block green for each correct answer and a block red for each
+        wrong answer
+ */
+function createPercentageBar(){
+    console.log(`per bar ${currQuestionIndex}`);
+    for (let i = 0; i < currQuestionIndex; i++){
+        const block = document.createElement('div');
+        block.classList.add('block');
+        if (score > i){
+            block.classList.add('correct');
+        } else {
+            block.classList.add('wrong');
+        }
+
+        percentageBarContainer.appendChild(block);
+    }
+}
+
+
+
 /**
  * @brief shows the current score
  */
@@ -252,7 +256,6 @@ function checkEnterKeyForStart(event){
 }
 
 
-
 /**
 @brief sets the class of an element to either correct or wrong based on
     the status
@@ -277,6 +280,8 @@ function clearStatus(element){
     element.classList.remove('correct');
     element.classList.remove('wrong');
 }
+
+
 
 
 /** Array of questions */

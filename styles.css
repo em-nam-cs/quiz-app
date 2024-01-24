@@ -136,5 +136,14 @@ body.wrong, .btn.wrong{
     border: 2px solid lightslategrey;
     margin: 0 0 10px 0;
     flex-grow: 1;
-    height: 20px;
+    height: 25px;
+}
+
+#instructions-btn{
+    height: 50px;
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    margin: 30px 10px;
 }
