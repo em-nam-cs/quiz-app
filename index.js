@@ -41,13 +41,13 @@ const quesetionCounterStatElement = document.getElementById('question-counter-st
 const closeInstructionsBtn = document.getElementById('close-instructions-icon');
 const showInstructionsBtn = document.getElementById('instructions-icon');
 const instructionsBox = document.getElementsByClassName('instructions-container')[0];
-
+const instructionsParent = document.getElementsByClassName('modal-content')[0];
 
 window.onload = function(){
     startBtn.addEventListener('click', startGame);
     endBtn.addEventListener('click', endGame);
     nextBtn.addEventListener('click', setNextQuestion);
-    showInstructionsBtn.addEventListener('click', showInstructions);
+    showInstructionsBtn.addEventListener('click', toggleInstructions);
     closeInstructionsBtn.addEventListener('click', closeInstructions);
     document.addEventListener('click', closeInstructions);
 }
@@ -55,8 +55,10 @@ window.onload = function(){
 
 let shuffledQuestions, currQuestionIndex, score;
 
-
-function showInstructions(){
+/**
+ * @brief opens or closes the instructions display
+ */
+function toggleInstructions(){
     if (instructionsBox.classList.contains('hide')){
         instructionsBox.classList.remove('hide'); 
     } else {
@@ -67,13 +69,13 @@ function showInstructions(){
 /**
  * 
  * if conditions check that click is (outside of the instructions box and not the 
- * show instructions icon) or (the close instructions icon)
+ * show instructions icon) or (the close instructions icon) and closes the display
 
  * @param {*} event 
  */
 
- //todo I could just add the body's event listener when the dialog box pops up 
-//  instead of needing this big conditional
+ //todo I could? just add the body's event listener when the dialog box pops up 
+//  instead of needing this big conditional???
 function closeInstructions(event){
     console.log(event.target);
     if ((instructionsBox !== event.target   
