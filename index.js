@@ -73,7 +73,7 @@ function showInstructions(){
  */
 
  //todo I could just add the body's event listener when the dialog box pops up 
- instead of needing this big conditional
+//  instead of needing this big conditional
 function closeInstructions(event){
     console.log(event.target);
     if ((instructionsBox !== event.target   
