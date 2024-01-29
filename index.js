@@ -38,15 +38,53 @@ const statsContainer = document.getElementById('stats-container');
 const scoreStatElement = document.getElementById('score-stat');
 const percentStatElement = document.getElementById('percentage-stat');
 const quesetionCounterStatElement = document.getElementById('question-counter-stat');
+const closeInstructionsBtn = document.getElementById('close-instructions-icon');
+const showInstructionsBtn = document.getElementById('instructions-icon');
+const instructionsBox = document.getElementsByClassName('instructions-container')[0];
 
 
-startBtn.addEventListener('click', startGame);
-endBtn.addEventListener('click', endGame);
-nextBtn.addEventListener('click', setNextQuestion);
+window.onload = function(){
+    startBtn.addEventListener('click', startGame);
+    endBtn.addEventListener('click', endGame);
+    nextBtn.addEventListener('click', setNextQuestion);
+    showInstructionsBtn.addEventListener('click', showInstructions);
+    closeInstructionsBtn.addEventListener('click', closeInstructions);
+    document.addEventListener('click', closeInstructions);
+}
 
 
 let shuffledQuestions, currQuestionIndex, score;
 
+
+function showInstructions(){
+    if (instructionsBox.classList.contains('hide')){
+        instructionsBox.classList.remove('hide'); 
+    } else {
+        instructionsBox.classList.add('hide'); 
+    }
+}
+
+/**
+ * 
+ * if conditions check that click is (outside of the instructions box and not the 
+ * show instructions icon) or (the close instructions icon)
+
+ * @param {*} event 
+ */
+
+ //todo I could just add the body's event listener when the dialog box pops up 
+ instead of needing this big conditional
+function closeInstructions(event){
+    console.log(event.target);
+    if ((instructionsBox !== event.target   
+        && !instructionsBox.contains(event.target)
+        && showInstructionsBtn !== event.target)    
+        || event.target == closeInstructionsBtn){
+
+        instructionsBox.classList.add('hide');
+    }
+
+}
 
 
 /**
