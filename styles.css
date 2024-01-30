@@ -59,6 +59,10 @@ body.wrong, .btn.wrong{
     margin: 40px;
 }
 
+.clickable:hover{
+    cursor: pointer;
+    color: gray;
+}
 
 .container, .instructions-container{
     width: 800px;
@@ -94,6 +98,7 @@ body.wrong, .btn.wrong{
     color: white;
     padding: 25px 10px;
     outline: none;
+    cursor: pointer;
 }
 
 .btn:hover:enabled{
@@ -157,21 +162,15 @@ body.wrong, .btn.wrong{
     right: 0;
 }
 
-#close-instructions-icon:hover{
-    color: gray;
-    cursor: pointer;
-}
-
-
-.instructions-container{
-    background-color: bisque;
-    height: 500px;
-    z-index: 1;
-}
-
 #instructions-modal{
     display: grid;
     grid-template-columns: repeat(2, auto);
 }
 
-
+.instructions-container{
+    background-color: bisque;
+    height: 500px;
+    z-index: 1;
+    color: black;
+    cursor: default;
+}

@@ -60,9 +60,11 @@ let shuffledQuestions, currQuestionIndex, score;
  */
 function toggleInstructions(){
     if (instructionsBox.classList.contains('hide')){
-        instructionsBox.classList.remove('hide'); 
+        // instructionsBox.classList.remove('hide'); 
+        showInstructions();
     } else {
         instructionsBox.classList.add('hide'); 
+        document.body.classList.remove('clickable');
     }
 }
 
@@ -70,7 +72,6 @@ function toggleInstructions(){
  * 
  * if conditions check that click is (outside of the instructions box and not the 
  * show instructions icon) or (the close instructions icon) and closes the display
-
  * @param {*} event 
  */
 
@@ -84,8 +85,13 @@ function closeInstructions(event){
         || event.target == closeInstructionsBtn){
 
         instructionsBox.classList.add('hide');
+        document.body.classList.remove('clickable');
     }
+}
 
+function showInstructions(){
+    instructionsBox.classList.remove('hide');
+    document.body.classList.add('clickable');
 }
 
 
