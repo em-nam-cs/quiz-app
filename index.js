@@ -49,7 +49,6 @@ window.onload = function(){
     nextBtn.addEventListener('click', setNextQuestion);
     showInstructionsBtn.addEventListener('click', toggleInstructions);
     closeInstructionsBtn.addEventListener('click', closeInstructions);
-    document.addEventListener('click', closeInstructions);
 }
 
 
@@ -58,13 +57,16 @@ let shuffledQuestions, currQuestionIndex, score;
 /**
  * @brief opens or closes the instructions display
  */
-function toggleInstructions(){
+function toggleInstructions(event){
+    console.log(`class list: ${instructionsBox.classList}`)
+    console.log(`if: ${instructionsBox.classList.contains('hide')? "true": "false"}`)
     if (instructionsBox.classList.contains('hide')){
-        // instructionsBox.classList.remove('hide'); 
         showInstructions();
     } else {
-        instructionsBox.classList.add('hide'); 
-        document.body.classList.remove('clickable');
+        console.log("entered here");    
+        closeInstructions(event, true);
+        // instructionsBox.classList.add('hide'); 
+        // document.body.classList.remove('clickable');
     }
 }
 
@@ -77,21 +79,26 @@ function toggleInstructions(){
 
  //todo I could? just add the body's event listener when the dialog box pops up 
 //  instead of needing this big conditional???
-function closeInstructions(event){
+function closeInstructions(event, toggleClosed = false){
     console.log(event.target);
+    console.log("CLOSED");
     if ((instructionsBox !== event.target   
         && !instructionsBox.contains(event.target)
-        && showInstructionsBtn !== event.target)    
+        
+        && showInstructionsBtn !== event.target)        //WHY IS THIS FUNCTION BEING TRIGGERED when init hide class, not in the toggle func
+        || toggleClosed
         || event.target == closeInstructionsBtn){
 
         instructionsBox.classList.add('hide');
         document.body.classList.remove('clickable');
+        document.removeEventListener('click', closeInstructions);
     }
 }
 
 function showInstructions(){
     instructionsBox.classList.remove('hide');
     document.body.classList.add('clickable');
+    document.addEventListener('click', closeInstructions);
 }
 
 

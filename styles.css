@@ -19,7 +19,6 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     --hue: var(--HUE_NEUTRAL);
     background-color: hsl(var(--hue), 100%, 40%)
 }
