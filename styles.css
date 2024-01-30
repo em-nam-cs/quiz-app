@@ -148,14 +148,20 @@ body.wrong, .btn.wrong{
 
 .nav-icon{
     height: 40px;
+    margin: 10px;
 }
 
 #instructions-icon{
-    margin: 20px 10px;
     position: fixed;
     top: 0;
     right: 0;
 }
+
+#close-instructions-icon:hover{
+    color: gray;
+    cursor: pointer;
+}
+
 
 .instructions-container{
     background-color: bisque;
@@ -167,4 +173,5 @@ body.wrong, .btn.wrong{
     display: grid;
     grid-template-columns: repeat(2, auto);
 }
+
 
