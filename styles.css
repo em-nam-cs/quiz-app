@@ -16,7 +16,6 @@ body{
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -57,6 +56,8 @@ body.wrong, .btn.wrong{
 .score-container{
     color: white;
     margin: 40px;
+    position: relative;
+    bottom: 200px;
 }
 
 

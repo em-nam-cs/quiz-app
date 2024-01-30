@@ -100,6 +100,7 @@ function startGame(){
     questionContainer.classList.remove('hide');
     nextBtn.classList.remove('hide');
     endBtn.classList.remove('hide');
+    scoreElement.classList.remove('hide');
     shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currQuestionIndex = 0;
     score = 0;
