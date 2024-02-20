@@ -21,86 +21,84 @@
 /**
  * @TODO figure out shuffled questions without needing global
  @TODO figure out how to shuffle order of the answer btns
+ @TODO toggle does not close instructions if on icon
+
  */
 
 const NUM_DECIMALS_DISP = 2;
 
-const startBtn = document.getElementById('start-btn');
-const endBtn = document.getElementById('end-btn');
-const nextBtn = document.getElementById('next-btn');
-const questionContainer = document.getElementById('question-container');
-const questionElement = document.getElementById('question');
-const answerBtns = document.getElementById('answer-btns');
-const questionCounterElement = document.getElementById('question-counter');
-const scoreElement = document.getElementById('score');
-const percentageBarContainer = document.getElementById('percentage-bar-container');
-const statsContainer = document.getElementById('stats-container');
-const scoreStatElement = document.getElementById('score-stat');
-const percentStatElement = document.getElementById('percentage-stat');
-const quesetionCounterStatElement = document.getElementById('question-counter-stat');
-const closeInstructionsBtn = document.getElementById('close-instructions-icon');
-const showInstructionsBtn = document.getElementById('instructions-icon');
-const instructionsBox = document.getElementsByClassName('instructions-container')[0];
-const instructionsParent = document.getElementsByClassName('modal-content')[0];
+const startBtn = document.getElementById("start-btn");
+const endBtn = document.getElementById("end-btn");
+const nextBtn = document.getElementById("next-btn");
+const questionContainer = document.getElementById("question-container");
+const questionElement = document.getElementById("question");
+const answerBtns = document.getElementById("answer-btns");
+const questionCounterElement = document.getElementById("question-counter");
+const scoreElement = document.getElementById("score");
+const percentageBarContainer = document.getElementById(
+    "percentage-bar-container"
+);
+const statsContainer = document.getElementById("stats-container");
+const scoreStatElement = document.getElementById("score-stat");
+const percentStatElement = document.getElementById("percentage-stat");
+const quesetionCounterStatElement = document.getElementById(
+    "question-counter-stat"
+);
+const closeInstructionsBtn = document.getElementById("close-instructions-icon");
+const showInstructionsBtn = document.getElementById("instructions-icon");
+const instructionsBox = document.getElementsByClassName(
+    "instructions-container"
+)[0];
+const instructionsParent = document.getElementsByClassName("modal-content")[0];
 
-window.onload = function(){
-    startBtn.addEventListener('click', startGame);
-    endBtn.addEventListener('click', endGame);
-    nextBtn.addEventListener('click', setNextQuestion);
-    showInstructionsBtn.addEventListener('click', toggleInstructions);
-    closeInstructionsBtn.addEventListener('click', closeInstructions);
-}
-
+window.onload = function () {
+    startBtn.addEventListener("click", startGame);
+    endBtn.addEventListener("click", endGame);
+    nextBtn.addEventListener("click", setNextQuestion);
+    showInstructionsBtn.addEventListener("click", toggleInstructions, {
+        capture: true,
+    });
+    closeInstructionsBtn.addEventListener("click", closeInstructions);
+};
 
 let shuffledQuestions, currQuestionIndex, score;
 
 /**
- * @brief opens or closes the instructions display
+ * @brief checks current open/hide of instructions and then toggles
+        to either open or close the instructions display
  */
-function toggleInstructions(event){
-    console.log(`class list: ${instructionsBox.classList}`)
-    console.log(`if: ${instructionsBox.classList.contains('hide')? "true": "false"}`)
-    if (instructionsBox.classList.contains('hide')){
+function toggleInstructions(event) {
+    if (instructionsBox.classList.contains("hide")) {
         showInstructions();
     } else {
-        console.log("entered here");    
-        closeInstructions(event, true);
-        // instructionsBox.classList.add('hide'); 
-        // document.body.classList.remove('clickable');
+        closeInstructions(event);
     }
+    event.stopPropagation(); //prevents the click event listener on body from triggering
 }
 
 /**
- * 
- * if conditions check that click is (outside of the instructions box and not the 
+ * @brief closes the instructions popup and removes the even listener from 
+        the body that would close it
+ * if conditions check that click is (outside of the instructions box and not the
  * show instructions icon) or (the close instructions icon) and closes the display
- * @param {*} event 
+ * @param {*} event
  */
-
- //todo I could? just add the body's event listener when the dialog box pops up 
-//  instead of needing this big conditional???
-function closeInstructions(event, toggleClosed = false){
-    console.log(event.target);
-    console.log("CLOSED");
-    if ((instructionsBox !== event.target   
-        && !instructionsBox.contains(event.target)
-        
-        && showInstructionsBtn !== event.target)        //WHY IS THIS FUNCTION BEING TRIGGERED when init hide class, not in the toggle func
-        || toggleClosed
-        || event.target == closeInstructionsBtn){
-
-        instructionsBox.classList.add('hide');
-        document.body.classList.remove('clickable');
-        document.removeEventListener('click', closeInstructions);
+function closeInstructions(event) {
+    if ((instructionsBox !== event.target &&
+        !instructionsBox.contains(event.target)) ||
+        event.target == closeInstructionsBtn
+    ) {
+        instructionsBox.classList.add("hide");
+        document.body.classList.remove("clickable");
+        document.body.removeEventListener("click", closeInstructions);
     }
 }
 
-function showInstructions(){
-    instructionsBox.classList.remove('hide');
-    document.body.classList.add('clickable');
-    document.addEventListener('click', closeInstructions);
+function showInstructions() {
+    instructionsBox.classList.remove("hide");
+    document.body.classList.add("clickable");
+    document.body.addEventListener("click", closeInstructions);
 }
-
 
 /**
 @brief function to start the game called when start button clicked
@@ -108,50 +106,47 @@ function showInstructions(){
     shuffles questions and starts the counting index to keep track of which 
     question is being asked, displays the first question
  */
-function startGame(){
-    startBtn.classList.add('hide');
-    questionContainer.classList.remove('hide');
-    nextBtn.classList.remove('hide');
-    endBtn.classList.remove('hide');
+function startGame() {
+    startBtn.classList.add("hide");
+    questionContainer.classList.remove("hide");
+    nextBtn.classList.remove("hide");
+    endBtn.classList.remove("hide");
     shuffledQuestions = questions.sort(() => Math.random() - 0.5);
     currQuestionIndex = 0;
     score = 0;
     displayScore();
     setNextQuestion();
-    document.body.removeEventListener('keydown', checkEnterKeyForStart);
+    document.body.removeEventListener("keydown", checkEnterKeyForStart);
 }
-
 
 /**
 @brief displays the next question by first reseting the screen, 
     showing the question, and then incrementing the counter to keep track
     of asked questions
  */
-function setNextQuestion(){
+function setNextQuestion() {
     resetState();
     showQuestion(shuffledQuestions[currQuestionIndex]);
 }
-
 
 /**
 @brief clears the state of the HTML by hiding the next button, 
     removing the previous answer buttons, and resetting the background
     to the initial nuetral color
  */
-function resetState(){
-    nextBtn.classList.add('hide');
-    statsContainer.classList.add('hide');
+function resetState() {
+    nextBtn.classList.add("hide");
+    statsContainer.classList.add("hide");
 
-    while(answerBtns.firstChild){
+    while (answerBtns.firstChild) {
         answerBtns.removeChild(answerBtns.firstChild);
     }
-    while(percentageBarContainer.firstChild){
+    while (percentageBarContainer.firstChild) {
         percentageBarContainer.removeChild(percentageBarContainer.firstChild);
     }
     clearStatus(document.body);
-    document.body.removeEventListener('keydown', checkEnterKeyForNext);
+    document.body.removeEventListener("keydown", checkEnterKeyForNext);
 }
-
 
 /**
 @brief displays the questions and creates answer buttons for each
@@ -160,25 +155,24 @@ function resetState(){
 @param currQ is one of the question objects in the questions array based on the 
     current question index counter
  */
-function showQuestion(currQ){
+function showQuestion(currQ) {
     questionElement.textContent = currQ.question;
 
-    questionCounterElement.classList.remove('hide');
+    questionCounterElement.classList.remove("hide");
     questionCounterElement.textContent = `Q #${currQuestionIndex + 1}`;
 
-    for (let i = 0; i < currQ.answers.length; i++){
-        const answer = currQ.answers[i]
-        const button = document.createElement('button');
+    for (let i = 0; i < currQ.answers.length; i++) {
+        const answer = currQ.answers[i];
+        const button = document.createElement("button");
         button.textContent = answer.text;
-        button.classList.add('btn');
-        if(answer.correct){
+        button.classList.add("btn");
+        if (answer.correct) {
             button.dataset.correct = answer.correct;
         }
-        button.addEventListener('click', selectAnswer);
+        button.addEventListener("click", selectAnswer);
         answerBtns.appendChild(button);
     }
 }
-
 
 /**
 @brief sets the background color of elements based on correctness
@@ -188,14 +182,13 @@ function showQuestion(currQ){
 
     Displays the next or restart button 
  */
-function selectAnswer(){
-
+function selectAnswer() {
     currQuestionIndex++;
 
     const userCorrect = this.dataset.correct;
-    this.classList.add('selected');
+    this.classList.add("selected");
 
-    if (userCorrect){
+    if (userCorrect) {
         score++;
     }
 
@@ -204,98 +197,89 @@ function selectAnswer(){
         setStatusClass(button, button.dataset.correct);
     });
 
-    if (currQuestionIndex < shuffledQuestions.length){
-        nextBtn.classList.remove('hide');
-        document.body.addEventListener('keydown', checkEnterKeyForNext);
+    if (currQuestionIndex < shuffledQuestions.length) {
+        nextBtn.classList.remove("hide");
+        document.body.addEventListener("keydown", checkEnterKeyForNext);
     } else {
         endGame();
     }
 
     //disable answer buttons after one is selected
-    for (let i = 0; i < answerBtns.children.length; i++){
+    for (let i = 0; i < answerBtns.children.length; i++) {
         answerBtns.children[i].disabled = true;
     }
 
     displayScore();
-
-    
 }
-
-
 
 /**
 @brief after last question, hide the questions and controls, set background
     to neutral, display stats, and offer the user the option to restart the deck
  */
-function endGame(){
-
-    questionContainer.classList.add('hide');
-    questionCounterElement.classList.add('hide');
-    scoreElement.classList.add('hide');
-    endBtn.classList.add('hide');
-    nextBtn.classList.add('hide');
+function endGame() {
+    questionContainer.classList.add("hide");
+    questionCounterElement.classList.add("hide");
+    scoreElement.classList.add("hide");
+    endBtn.classList.add("hide");
+    nextBtn.classList.add("hide");
 
     clearStatus(document.body);
 
     displayStats();
 
-    startBtn.textContent = 'RESTART';
-    startBtn.classList.remove('hide');
-    document.body.addEventListener('keydown', checkEnterKeyForStart);
+    startBtn.textContent = "RESTART";
+    startBtn.classList.remove("hide");
+    document.body.addEventListener("keydown", checkEnterKeyForStart);
 }
-
 
 /**
  * @brief displays each stat based on the user's score and how many questions
         were answered
  */
-function displayStats(){
-    statsContainer.classList.remove('hide');
+function displayStats() {
+    statsContainer.classList.remove("hide");
     scoreStatElement.textContent = `Overall Score: ${score}`;
     quesetionCounterStatElement.textContent = `Total Questions Answered: ${currQuestionIndex}`;
-    percentStatElement.textContent = `Percentage Correct: ${((score/(currQuestionIndex)).toFixed(NUM_DECIMALS_DISP))*100}%`;
+    percentStatElement.textContent = `Percentage Correct: ${
+        (score / currQuestionIndex).toFixed(NUM_DECIMALS_DISP) * 100
+    }%`;
     createPercentageBar();
 }
-
-
 
 /**
  * @brief creates a block for each question that was answered and shades
         in a block green for each correct answer and a block red for each
         wrong answer
  */
-function createPercentageBar(){
+function createPercentageBar() {
     console.log(`per bar ${currQuestionIndex}`);
-    for (let i = 0; i < currQuestionIndex; i++){
-        const block = document.createElement('div');
-        block.classList.add('block');
-        if (score > i){
-            block.classList.add('correct');
+    for (let i = 0; i < currQuestionIndex; i++) {
+        const block = document.createElement("div");
+        block.classList.add("block");
+        if (score > i) {
+            block.classList.add("correct");
         } else {
-            block.classList.add('wrong');
+            block.classList.add("wrong");
         }
 
         percentageBarContainer.appendChild(block);
     }
 }
 
-
-
 /**
  * @brief shows the current score
  */
-function displayScore(){
-    scoreElement.classList.remove('hide');
+function displayScore() {
+    scoreElement.classList.remove("hide");
     scoreElement.textContent = `Score: ${score}`;
 }
-
 
 /**
  * @brief function to advance the question if "enter" key was pressed down
 
  * @param event captures the event that triggered so can check which keydown
  */
-function checkEnterKeyForNext(event){
+function checkEnterKeyForNext(event) {
     if (event.key === "Enter") {
         setNextQuestion();
     }
@@ -306,12 +290,11 @@ function checkEnterKeyForNext(event){
 
  * @param event captures the event that triggered so can check which keydown
  */
-function checkEnterKeyForStart(event){
+function checkEnterKeyForStart(event) {
     if (event.key === "Enter") {
         startGame();
     }
 }
-
 
 /**
 @brief sets the class of an element to either correct or wrong based on
@@ -319,12 +302,12 @@ function checkEnterKeyForStart(event){
 @param element HTML element that is having the class updated
 @param status the status from data that indicates if it should be correct/wrong
  */
-function setStatusClass(element, status){
+function setStatusClass(element, status) {
     clearStatus(element);
-    if (status){
-        element.classList.add('correct');
+    if (status) {
+        element.classList.add("correct");
     } else {
-        element.classList.add('wrong');
+        element.classList.add("wrong");
     }
 }
 
@@ -333,13 +316,10 @@ function setStatusClass(element, status){
 
 @param element HTML element that is having the class updated
  */
-function clearStatus(element){
-    element.classList.remove('correct');
-    element.classList.remove('wrong');
+function clearStatus(element) {
+    element.classList.remove("correct");
+    element.classList.remove("wrong");
 }
-
-
-
 
 /** Array of questions */
 const questions = [
@@ -349,51 +329,51 @@ const questions = [
     //         {text: '4', correct: true},
     //         {text: '22', correct: false}
     //     ]
-    // }, 
+    // },
     {
-        question: 'what is 2 + 10?',
+        question: "what is 2 + 10?",
         answers: [
-            {text: '12', correct: true},
-            {text: '22', correct: false},
-            {text: '0', correct: false},
-            {text: '15', correct: false}
-        ]
-    }, 
+            { text: "12", correct: true },
+            { text: "22", correct: false },
+            { text: "0", correct: false },
+            { text: "15", correct: false },
+        ],
+    },
     {
-        question: 'What is a grown up puppy?',
+        question: "What is a grown up puppy?",
         answers: [
-            {text: 'dog', correct: true},
-            {text: 'cat', correct: false},
-            {text: 'turtle', correct: false},
-            {text: 'duck', correct: false}
-        ]
-    }, 
+            { text: "dog", correct: true },
+            { text: "cat", correct: false },
+            { text: "turtle", correct: false },
+            { text: "duck", correct: false },
+        ],
+    },
     {
-        question: 'What is a baby dog?',
+        question: "What is a baby dog?",
         answers: [
-            {text: 'puppy', correct: true},
-            {text: 'guppy', correct: false},
-            {text: 'cat', correct: false},
-            {text: 'kitten', correct: false}
-        ]
-    }, 
+            { text: "puppy", correct: true },
+            { text: "guppy", correct: false },
+            { text: "cat", correct: false },
+            { text: "kitten", correct: false },
+        ],
+    },
     {
-        question: 'What was the color of the start button?',
+        question: "What was the color of the start button?",
         answers: [
-            {text: 'yellow', correct: false},
-            {text: 'red', correct: false},
-            {text: 'blue', correct: true}
-        ]
-    }, 
+            { text: "yellow", correct: false },
+            { text: "red", correct: false },
+            { text: "blue", correct: true },
+        ],
+    },
     {
-        question: 'How much wood could a woodchuck chuck?',
+        question: "How much wood could a woodchuck chuck?",
         answers: [
-            {text: 'if a woodchuck could chuck wood', correct: true},
-            {text: 'wrong', correct: false},
-            {text: 'no', correct: false},
-            {text: "don't pick me", correct: false}
-        ]
-    }
+            { text: "if a woodchuck could chuck wood", correct: true },
+            { text: "wrong", correct: false },
+            { text: "no", correct: false },
+            { text: "don't pick me", correct: false },
+        ],
+    },
     // {
     //     question: 'what is 2 + 1?',
     //     answers: [
@@ -402,7 +382,7 @@ const questions = [
     //         {text: '0', correct: false},
     //         {text: '15', correct: false}
     //     ]
-    // }, 
+    // },
     // {
     //     question: 'what is 22 + 10?',
     //     answers: [
@@ -411,7 +391,7 @@ const questions = [
     //         {text: '0', correct: false},
     //         {text: '15', correct: false}
     //     ]
-    // }, 
+    // },
     // {
     //     question: 'what is 2 * 10?',
     //     answers: [
@@ -420,7 +400,7 @@ const questions = [
     //         {text: '0', correct: false},
     //         {text: '15', correct: false}
     //     ]
-    // }, 
+    // },
     // {
     //     question: 'what is 2 + 0?',
     //     answers: [
@@ -429,7 +409,7 @@ const questions = [
     //         {text: '0', correct: false},
     //         {text: '15', correct: false}
     //     ]
-    // }, 
+    // },
     // {
     //     question: 'What is the longest answer',
     //     answers: [
@@ -439,5 +419,4 @@ const questions = [
     //         {text: '15', correct: false}
     //     ]
     // }
-]
-
+];
